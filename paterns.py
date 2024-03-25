@@ -80,6 +80,7 @@ basic_box_patern = {
                 (("-t",), (0,)),
                 ((0,), ("0.5x", "0.5t")),
                 (("-x",), (0,)),
+                ((0,), ('-x', '-z', '-t'))
             ],
             True,
             1
@@ -107,7 +108,7 @@ basic_box_patern = {
         ),
         (
             [
-                (("x", "y", "t"), ("0.5x", "0.5t")),
+                (("x", "y", "1.5t"), ("0.5x", "0.5t")),
                 ((0,), ("z",))
             ],
             False,
@@ -115,7 +116,7 @@ basic_box_patern = {
         ),
         (
             [
-                (("2x", "y", "0.5t"), ("z", "0.5x", "0.5t")),
+                (("2x", "y", "2.5t"), ("z", "0.5x", "0.5t")),
                 ((0,), ("-z",))
             ],
             False,
@@ -160,89 +161,4 @@ basic_box_patern = {
 }
 
 
-class BoxPatern:
-    def __init__(self, cut, fold, in_mark_rec, ex_mark_rec, **box_info):
-        self.cut = cut
-        self.fold = fold
-        self.ex_mark = ex_mark_rec
-        self.in_mark = in_mark_rec
-        self.template = True
-        self.multiplyers = set()
-
-        all_vector_parts = []
-        for unit in [self.cut, self.fold, self.ex_mark, self.in_mark]:
-            for pol in unit:
-                for vec in pol[0]:
-                    all_vector_parts.extend(vec[0] + vec[1])
-        self.multiplyers = set(map(lambda y: y.upper(),filter(lambda x: not str(x).isdigit() and x not in (".","-", "[", "]", "'", ",", " "), "".join(str(all_vector_parts)))))
-
-
-
-
-
-
-
-
-    def calculate(self, multiplyers):
-        self.template = False
-
-"""
-class BoxPatern AAAAAAAAAAAAAAAAAAA:
-    def __init__(self, x: float, y: float, z: float, t: float, in_mark="", ex_mark="",
-                 **box_info: dict[str, list[tuple[tuple, bool, int]]]):
-        self.cut = box_info["cut"]
-        self.fold = box_info["fold"]
-        self.ex_mark = box_info["ex_mark_rec"]
-        self.in_mark = box_info["in_mark_rec"]
-        self.cal_cut = []
-        self.cal_fold = []
-        self.cal_ex_mark = []
-        self.cal_in_mark = []
-        self.calculate_polylines(x, y, z, t, self.cut, self.cal_cut)
-        self.calculate_polylines(x, y, z, t, self.fold, self.cal_fold)
-        self.calculate_polylines(x, y, z, t, self.ex_mark, self.cal_ex_mark)
-        self.calculate_polylines(x, y, z, t, self.in_mark, self.cal_in_mark)
-
-
-    def calculate_polylines(self, x, y, z, t, category, new):
-        x = x
-        y = y
-        z = z
-        t = t
-
-        def cal_comp(component):
-            ret = 0
-            for c in component:
-                if type(c) in (int, float):
-                    ret += c
-                    continue
-                match c.upper():
-                    case "X": ret += x
-                    case "Y": ret += y
-                    case "Z": ret += z
-                    case "T": ret += t
-
-                    case "-X": ret += -x
-                    case "-Y": ret += -y
-                    case "-Z": ret += -z
-                    case "-T": ret += -t
-                    case _:
-                        match c[-1].upper():
-                            case "X": ret += x * float(c[:-1])
-                            case "Y": ret += y * float(c[:-1])
-                            case "Z": ret += z * float(c[:-1])
-                            case "T": ret += t * float(c[:-1])
-                            case _: ret += float(c)
-            return ret
-
-        for polyline in category:
-            calculated = []
-            for vectors in polyline[0]:
-                calculated.append((cal_comp(vectors[0]), cal_comp(vectors[1])))
-            new.append((calculated, polyline[1], polyline[2]))
-"""
-
-
-new_box = BoxPatern(**basic_box_patern)
-print(new_box.multiplyers)
 
